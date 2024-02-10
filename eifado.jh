@@ -1,0 +1,136 @@
+/**
+ * Client entity.
+ * @author Bilali.
+ */
+entity Payment {
+	date LocalDate required,
+    amount Double required,
+}
+
+
+/**
+ * Fournisseur entity.
+ * @author Bilali.
+ */
+ entity Supplier {
+	name String required,
+    contact String,
+    adress String
+}
+
+/**
+ * Article entity.
+ * @author Bilali.
+ */
+entity Item {
+	label String required,
+    description String,
+    brand String
+}
+
+/**
+ * Categorie entity.
+ * @author Bilali.
+ */
+entity Category {
+	label String required,
+	description String
+}
+
+/**
+ * Employe entity.
+ * @author Bilali.
+ */
+entity Magazin {
+	label String required,
+    adress String
+}
+
+/**
+ * Employe entity.
+ * @author Bilali.
+ */
+entity Boutique {
+	label String required,
+    adress String
+}
+
+/**
+ * Achat entity.
+ * @author Bilali.
+ */
+entity Supply {
+	date LocalDate
+}
+
+/**
+ * Vente entity.
+ * @author Bilali.
+ */
+entity Sale {
+	date LocalDate
+}
+
+/**
+ * Vente entity.
+ * @author Bilali.
+ */
+entity StockOperation {
+	date LocalDate
+}
+
+/**
+ * Devis entity.
+ * @author Bilali.
+ */
+entity Customer {
+	name String,
+    contact String,
+    adress String,
+}
+
+/**
+ * ArticleQuantite entity.
+ * @author Bilali.
+ */
+entity ItemQuantity {
+	quantity Long required,
+    unitPrice Double required
+}
+
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+
+    Supply{supplyDetails } to ItemQuantity
+    
+    Devis{articles} to ItemQuantity
+
+    Sale{saleDetails} to ItemQuantity 
+    
+    Sale{paymentList } to Payment 
+}
+
+relationship ManyToOne {
+	Sale{customer} to Customer
+    Sale{boutique} to Boutique
+    StockOperation{source} to Magazin
+    StockOperation{destination} to Magazin
+	Supply{fournisseur} to Supplier,   
+	ItemQuantity{article} to Item
+    Item{category} to Category
+}
+
+
+// Set pagination options
+paginate Sale, Supply, Category, Supplier, Customer with pagination
+//paginate  with pagination
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service * with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
